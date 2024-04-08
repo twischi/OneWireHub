@@ -101,7 +101,11 @@ constexpr uint8_t VALUE_IPL{(microsecondsToClockCycles(1) > 120) ? 26 : 22};
     // ⤷ instructions per loop
 
 #elif defined(ARDUINO_ARCH_ESP32) || defined(ESP32) /* ESP32 Family */
-
+  // Hot FIX for the ESP32 CPU speed in MHz
+  // Overwrite  #define clockCyclesPerMicrosecond() ( (long int)getCpuFrequencyMhz() )
+  // in from ESP32's <Arduino.h> 
+  #define clockCyclesPerMicrosecond() ( 240 ) // Just set the CPU frequency in MHz what are the desired µs
+  
   #define PIN_TO_BASEREG(pin)           (0)
   #define PIN_TO_BITMASK(pin)           (pin)
   #define DIRECT_READ(base, pin)        digitalRead(pin)
